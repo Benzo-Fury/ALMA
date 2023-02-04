@@ -9,7 +9,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default commandModule({
-  type: CommandType.Both,
+  type: CommandType.Slash,
   plugins: [publish()],
   description: "Generates a image from your prompt.",
   //alias : [],
@@ -22,17 +22,14 @@ export default commandModule({
     },
   ],
   execute: async (ctx, args) => {
-    //getting the question from the command
-    if (ctx.isMessage()) {
-      return ctx.reply(
-        "This command can only be used as a interaction (/generate)."
-      );
-    }
-
     //deferring the interaction
     await ctx.interaction.deferReply();
 
     const prompt = ctx.interaction.options.getString("prompt")!;
+
+    if (prompt.length > 50) {
+      return ctx.interaction.editReply("Your prompt is to long");
+    }
 
     try {
       //creating image
@@ -43,12 +40,17 @@ export default commandModule({
       });
       //creating embed
       const embed = new EmbedBuilder()
-      .setColor("#2f3136")
-      .setTitle('Image Generation')
-      .setImage(`${response.data.data[0].url}`)
+        .setAuthor({
+          name: prompt,
+          iconURL:
+            "https://cdn.discordapp.com/attachments/997760352387338280/1071310712745508984/ghat_gpt.png",
+        })
+        .setColor("#2f3136")
+        .setImage(`${response.data.data[0].url}`)
+        .setFooter({ text: "Using DALL·E" });
 
       //sending the image
-      ctx.interaction.editReply({ content: response.data.data[0].url });
+      ctx.interaction.editReply({ embeds: [embed] });
     } catch {
       ctx.interaction.editReply(
         "A error occurred while trying to generate your image. Chances are that your prompt was inappropriate. Try again or use a different prompt."

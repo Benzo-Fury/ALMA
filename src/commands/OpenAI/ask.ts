@@ -10,7 +10,7 @@ const openai = new OpenAIApi(configuration);
 
 export default commandModule({
   name: "ask",
-  type: CommandType.Both,
+  type: CommandType.Slash,
   plugins: [publish()],
   description: "Asks openAI (chat GPT) questions.",
   //alias : [],
@@ -39,38 +39,41 @@ export default commandModule({
     },
   ],
   execute: async (ctx, args) => {
-
-    //getting the question from the command
-    if (ctx.isMessage()) {
-      return ctx.reply(
-        "This command can only be used as a interaction (/ask)."
-      );
-    }
-
     //deferring interaction
     await ctx.interaction.deferReply();
 
-    const question = ctx.interaction.options.getString("question");
+    const question = ctx.interaction.options.getString("question")!;
     let uniqueness =
       ctx.interaction.options.getString("uniqueness") === "HIGH" ? 1 : 0;
 
     //asking the question to openai
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: question,
-      temperature: uniqueness,
-      max_tokens: 100,
-    });
+    try {
+      const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: question,
+        temperature: uniqueness,
+        max_tokens: 100,
+      });
+      //Turning the text into a embed
+      const answer = response.data.choices[0].text!;
+      const embed = new EmbedBuilder()
+        .setAuthor({
+          name: question,
+          iconURL:
+            "https://cdn.discordapp.com/attachments/997760352387338280/1071310712745508984/ghat_gpt.png",
+        })
+        .setColor("#2f3136")
+        .setDescription(
+          answer.length > 2000 ? answer.substring(0, 2000) : answer
+        )
+        .setFooter({ text: "Using davinci-003 text completion." });
 
-    //Turning the text into a embed
-    const answer = response.data.choices[0].text!;
-    const embed = new EmbedBuilder()
-      .setColor("#2f3136")
-      .setTitle("OpenAI Answer")
-      .setDescription(answer.length > 2000 ? answer.substring(0, 2000) : answer)
-      .setFooter({ text: "Using davinci-003 text completion." });
-
-    //checking the response inst to long and responding
-    await ctx.interaction.editReply({ embeds: [embed] });
+      //checking the response inst to long and responding
+      await ctx.interaction.editReply({ embeds: [embed] });
+    } catch {
+      return ctx.reply(
+        "There was an error while processing your request. Try again."
+      );
+    }
   },
 });
