@@ -34,6 +34,12 @@ export async function personality(i: ButtonInteraction<CacheType>) {
           "Marv is a chatbot that reluctantly answers questions with sarcastic responses.",
         value: "marv",
       })
+      .addOptions({
+        label: "Maria",
+        description:
+          "Maria is a chatbot designed to provide helpful and informative responses.",
+        value: "maria",
+      })
   );
 
   //sending the select menu
@@ -69,12 +75,18 @@ export async function personality(i: ButtonInteraction<CacheType>) {
           upsert: true,
         }
       );
+
       let personalityDesc;
+
       //setting personality desc for right chatbot
-      if (personality === "marv") {
-        personalityDesc = personalityDesc1.marv;
-      } else {
-        personalityDesc = personalityDesc1.marv;
+      switch (personality) {
+        case "maria":
+          personalityDesc = personalityDesc1.maria;
+          break;
+        default:
+          "marv";
+          personalityDesc = personalityDesc1.marv;
+          break;
       }
       //creating embed to send with edit
       const embed = new EmbedBuilder()
@@ -88,11 +100,13 @@ export async function personality(i: ButtonInteraction<CacheType>) {
           `This channel will now respond to all messages with the custom text trained AI called ${personality}. ${personalityDesc} Have fun. `
         )
         .addFields({
-          name: "Some Questions to Ask Marv",
+          name: `Some Questions to Ask ${personality}`,
           value:
             "- What is the time? ⏰\n- What is the biggest animal in the world? 🐱\n- What is the most vibrant color? 🟪",
         });
-      await interaction.reply({embeds: [embed]});
+      await interaction.reply({ embeds: [embed] });
     })
-    .catch((err) => console.log(`No interactions were collected.`));
+    .catch((err) => {
+      throw new Error(err);
+    });
 }

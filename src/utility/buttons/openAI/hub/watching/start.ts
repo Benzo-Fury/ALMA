@@ -7,7 +7,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import serverSchema from "../../../../../schemas/serverSchema";
-import personalityDesc1 from '../../../../other/openAI/personalityDesc.json'
+import personalityDesc1 from "../../../../other/openAI/personalityDesc.json";
 
 export async function start(i: ButtonInteraction<CacheType>) {
   //creating modal to gather information to start the AI watching
@@ -22,9 +22,18 @@ export async function start(i: ButtonInteraction<CacheType>) {
           "Marv is a chatbot that reluctantly answers questions with sarcastic responses.",
         value: "marv",
       })
+      .addOptions({
+        label: "Maria",
+        description:
+          "Maria is a chatbot designed to provide helpful and informative responses.",
+        value: "maria",
+      })
   );
 
-  const message = await i.reply({ content: "Please select a personality for the AI to have.", components: [row] });
+  const message = await i.reply({
+    content: "Please select a personality for the AI to have.",
+    components: [row],
+  });
 
   //creating the collector to receive personality answer
 
@@ -50,10 +59,14 @@ export async function start(i: ButtonInteraction<CacheType>) {
       let personalityDesc;
 
       //setting personality desc for right chatbot
-      if (personality === "marv") {
-        personalityDesc = personalityDesc1.marv;
-      } else {
-        personalityDesc = personalityDesc1.marv;
+      switch (personality) {
+        case "maria":
+          personalityDesc = personalityDesc1.maria;
+          break;
+        default:
+          "marv";
+          personalityDesc = personalityDesc1.marv;
+          break;
       }
 
       //updating database with new AI watching info
@@ -83,12 +96,15 @@ export async function start(i: ButtonInteraction<CacheType>) {
           `This channel will now respond to all messages with the custom text trained AI called ${personality}. ${personalityDesc} Have fun. `
         )
         .addFields({
-            name: "Some Questions to Ask Marv",
-            value: "- What is the time? ⏰\n- What is the biggest animal in the world? 🐱\n- What is the most vibrant color? 🟪"
+          name: `Some Questions to Ask ${personality}`,
+          value:
+            "- What is the time? ⏰\n- What is the biggest animal in the world? 🐱\n- What is the most vibrant color? 🟪",
         });
 
       //replying/editing with successful AI watch start/update.
       interaction.reply({ embeds: [embed] });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      throw new Error(err);
+    });
 }
