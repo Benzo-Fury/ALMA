@@ -15,3 +15,8 @@ The bot is capable of generating responses to input in a conversational manner, 
 ## Contributing
 
 If you would like to contribute to the development of this bot, feel free to submit a pull request or open an issue. We welcome all contributions that improve the functionality of the bot.
+
+## Inviting
+
+At the time being the bot is a WIP so may be down at times or may be receiving many errors/crashes. Please keep this in mind when attempting to use Siamese.
+[Invite me](https://discord.com/api/oauth2/authorize?client_id=1071264323533557841&permissions=8&scope=bot%20applications.commands)
