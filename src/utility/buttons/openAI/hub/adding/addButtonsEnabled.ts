@@ -13,7 +13,7 @@ export function addButtonsEnabled() {
     new ButtonBuilder() // AI PERSONALITY
       .setCustomId("personality")
       .setLabel("Personality")
-      .setStyle(ButtonStyle.Primary)
+      .setStyle(ButtonStyle.Primary),
   );
-  return row
+  return row;
 }

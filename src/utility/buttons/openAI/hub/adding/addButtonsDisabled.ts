@@ -16,7 +16,7 @@ export function addButtonsDisabled() {
       .setCustomId("personality")
       .setLabel("Personality")
       .setStyle(ButtonStyle.Primary)
-      .setDisabled(true)
+      .setDisabled(true),
   );
-  return row
+  return row;
 }

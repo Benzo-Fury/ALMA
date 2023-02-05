@@ -7,7 +7,9 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import serverSchema from "../../../../../schemas/serverSchema";
+import userSchema from "../../../../../schemas/userSchema";
 import personalityDesc1 from "../../../../other/openAI/personalityDesc.json";
+import textTrainer from '../../../../other/openAI/personalityDesc.json'
 
 export async function start(i: ButtonInteraction<CacheType>) {
   //creating modal to gather information to start the AI watching
@@ -27,6 +29,12 @@ export async function start(i: ButtonInteraction<CacheType>) {
         description:
           "Maria is a chatbot designed to provide helpful and informative responses.",
         value: "maria",
+      })
+      .addOptions({
+        label: "Trevor",
+        description:
+          "Trevor is a chatbot that... that... yeah its best if I dont say.",
+        value: "trevor",
       })
   );
 
@@ -61,11 +69,21 @@ export async function start(i: ButtonInteraction<CacheType>) {
       //setting personality desc for right chatbot
       switch (personality) {
         case "maria":
-          personalityDesc = personalityDesc1.maria;
+          personalityDesc = personalityDesc1.maria.desc;
+          break;
+        case "trevor":
+          {
+            const userResult = await userSchema.findOne({ _id: interaction.user.id });
+            if (!userResult || userResult.trevorAllowed === false)
+              return interaction.reply(
+                "This chatbot is not accessible by you."
+              );
+            personalityDesc = textTrainer.trevor.desc;
+          }
           break;
         default:
           "marv";
-          personalityDesc = personalityDesc1.marv;
+          personalityDesc = personalityDesc1.marv.desc;
           break;
       }
 

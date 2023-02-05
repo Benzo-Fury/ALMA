@@ -9,9 +9,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  AIPersonality: {
-    type: String,
-    required: true
+  trevorAllowed: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 });
 

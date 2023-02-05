@@ -8,9 +8,9 @@ import {
 } from "discord.js";
 import { addButtonsEnabled } from "../../utility/buttons/openAI/hub/adding/addButtonsEnabled";
 import { addButtonsDisabled } from "../../utility/buttons/openAI/hub/adding/addButtonsDisabled";
-import { start } from "../../utility/buttons/openAI/hub/watching/start";
-import { personality } from "../../utility/buttons/openAI/hub/watching/personality";
-import { stop } from "../../utility/buttons/openAI/hub/watching/stop";
+import { start } from "../../utility/buttons/openAI/hub/automation-functions/start";
+import { personality } from "../../utility/buttons/openAI/hub/automation-functions/personality";
+import { stop } from "../../utility/buttons/openAI/hub/automation-functions/stop";
 
 export default commandModule({
   type: CommandType.Slash,
@@ -29,7 +29,7 @@ export default commandModule({
     const embed = new EmbedBuilder()
       .setColor("#2f3136")
       .setAuthor({
-        name: "AI Monitoring",
+        name: "AI Chat",
         iconURL:
           "https://cdn.discordapp.com/attachments/997760352387338280/1071310712745508984/ghat_gpt.png",
       })

@@ -40,6 +40,12 @@ export async function personality(i: ButtonInteraction<CacheType>) {
           "Maria is a chatbot designed to provide helpful and informative responses.",
         value: "maria",
       })
+      .addOptions({
+        label: "Trevor",
+        description:
+          "Trevor is a chatbot that... that... yeah its best if I dont say.",
+        value: "trevor",
+      })
   );
 
   //sending the select menu
@@ -81,11 +87,14 @@ export async function personality(i: ButtonInteraction<CacheType>) {
       //setting personality desc for right chatbot
       switch (personality) {
         case "maria":
-          personalityDesc = personalityDesc1.maria;
+          personalityDesc = personalityDesc1.maria.desc;
+          break;
+        case "trevor":
+          personalityDesc = personalityDesc1.trevor.desc;
           break;
         default:
           "marv";
-          personalityDesc = personalityDesc1.marv;
+          personalityDesc = personalityDesc1.marv.desc;
           break;
       }
       //creating embed to send with edit

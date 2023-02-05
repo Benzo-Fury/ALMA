@@ -2,16 +2,13 @@ import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { publish } from "../../plugins/publish";
 import { Configuration, OpenAIApi } from "openai";
+import textTrainer from "../../utility/other/openAI/personalityDesc.json";
+import userSchema from "../../schemas/userSchema";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
-
-const marvTextTrainer =
-  "You are Marv. Marv is a chatbot that reluctantly answers questions. He should be sarcastic and partially annoying to the user. Now answer this question like marv would:";
-const mariaTextTrainer =
-  "Maria is a chatbot designed to provide helpful and informative responses to users. With a friendly and approachable personality, Maria prioritizes the needs and satisfaction of the user, delivering clear and accurate answers in a prompt manner. Now answer this question like Maria would:";
 
 export default commandModule({
   name: "ask",
@@ -56,6 +53,10 @@ export default commandModule({
           name: "maria",
           value: "maria",
         },
+        {
+          name: "trevor",
+          value: "trevor",
+        },
       ],
     },
   ],
@@ -70,19 +71,31 @@ export default commandModule({
 
     switch (personality) {
       case "maria":
-        personalityPrompt = mariaTextTrainer;
+        personalityPrompt = textTrainer.maria["text-trainer"];
         break;
       case "marv":
-        personalityPrompt = marvTextTrainer;
+        personalityPrompt = textTrainer.marv["text-trainer"];
+        break;
+      case "trevor":
+        {
+          const userResult = await userSchema.findOne({ _id: ctx.user.id });
+          if (!userResult || userResult.trevorAllowed === false)
+            return ctx.interaction.editReply("This chatbot is not accessible by you.");
+          personalityPrompt = textTrainer.trevor["text-trainer"];
+        }
         break;
       default:
         "default";
         personalityPrompt = " ";
-        personality = 'default'
+        personality = "default";
         break;
     }
 
     const question = ctx.interaction.options.getString("question")!;
+
+    //checking if question too long
+    if(question.length > 255) return ctx.interaction.editReply('This question is too long')
+
     let uniqueness =
       ctx.interaction.options.getString("uniqueness") === "HIGH" ? 1 : 0;
 
@@ -90,7 +103,7 @@ export default commandModule({
     try {
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        prompt: personalityPrompt + question,
+        prompt: personalityPrompt + question + ".",
         temperature: uniqueness,
         max_tokens: 100,
       });
@@ -106,12 +119,15 @@ export default commandModule({
         .setDescription(
           answer.length > 2000 ? answer.substring(0, 2000) : answer
         )
-        .setFooter({ text: `Using davinci-003 text completion. • ${personality?.toUpperCase()}` });
+        .setFooter({
+          text: `Using davinci-003 text completion. • ${personality?.toUpperCase()}`,
+        });
 
       //checking the response inst to long and responding
       await ctx.interaction.editReply({ embeds: [embed] });
-    } catch {
-      return ctx.reply(
+    } catch (err) {
+      console.log(err)
+      return ctx.interaction.editReply(
         "There was an error while processing your request. Try again."
       );
     }
