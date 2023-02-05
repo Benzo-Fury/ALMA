@@ -8,6 +8,11 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+const marvTextTrainer =
+  "You are Marv. Marv is a chatbot that reluctantly answers questions. He should be sarcastic and partially annoying to the user. Now answer this question like marv would:";
+const mariaTextTrainer =
+  "Maria is a chatbot designed to provide helpful and informative responses to users. With a friendly and approachable personality, Maria prioritizes the needs and satisfaction of the user, delivering clear and accurate answers in a prompt manner. Now answer this question like Maria would:";
+
 export default commandModule({
   name: "ask",
   type: CommandType.Slash,
@@ -37,10 +42,45 @@ export default commandModule({
         },
       ],
     },
+    {
+      name: "personality",
+      type: ApplicationCommandOptionType.String,
+      description: "A personality you might like OpenAI to respond with.",
+      required: false,
+      choices: [
+        {
+          name: "marv",
+          value: "marv",
+        },
+        {
+          name: "maria",
+          value: "maria",
+        },
+      ],
+    },
   ],
   execute: async (ctx, args) => {
     //deferring interaction
     await ctx.interaction.deferReply();
+
+    //gathering personality
+    let personality = ctx.interaction.options.getString("personality");
+
+    let personalityPrompt;
+
+    switch (personality) {
+      case "maria":
+        personalityPrompt = mariaTextTrainer;
+        break;
+      case "marv":
+        personalityPrompt = marvTextTrainer;
+        break;
+      default:
+        "default";
+        personalityPrompt = " ";
+        personality = 'default'
+        break;
+    }
 
     const question = ctx.interaction.options.getString("question")!;
     let uniqueness =
@@ -50,7 +90,7 @@ export default commandModule({
     try {
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        prompt: question,
+        prompt: personalityPrompt + question,
         temperature: uniqueness,
         max_tokens: 100,
       });
@@ -66,7 +106,7 @@ export default commandModule({
         .setDescription(
           answer.length > 2000 ? answer.substring(0, 2000) : answer
         )
-        .setFooter({ text: "Using davinci-003 text completion." });
+        .setFooter({ text: `Using davinci-003 text completion. • ${personality?.toUpperCase()}` });
 
       //checking the response inst to long and responding
       await ctx.interaction.editReply({ embeds: [embed] });
@@ -76,4 +116,4 @@ export default commandModule({
       );
     }
   },
-}); 
+});

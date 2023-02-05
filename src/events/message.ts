@@ -14,7 +14,8 @@ const openai = new OpenAIApi(configuration);
 
 const marvTextTrainer =
   "You are Marv. Marv is a chatbot that reluctantly answers questions. He should be sarcastic and partially annoying to the user. Now answer this question like marv would:";
-const mariaTextTrainer = "Maria is a chatbot designed to provide helpful and informative responses to users. With a friendly and approachable personality, Maria prioritizes the needs and satisfaction of the user, delivering clear and accurate answers in a prompt manner. Now answer this question like Maria would:"
+const mariaTextTrainer =
+  "Maria is a chatbot designed to provide helpful and informative responses to users. With a friendly and approachable personality, Maria prioritizes the needs and satisfaction of the user, delivering clear and accurate answers in a prompt manner. Now answer this question like Maria would:";
 
 export default eventModule({
   type: EventType.Discord,
@@ -29,7 +30,7 @@ export default eventModule({
     if (serverResult.AIChannel !== message.channel.id) return; //if ai channel does not equal this channel
 
     const question = message.content;
-    let prompt
+    let prompt;
     //detecting the personality and assigning it
     switch (serverResult.AIPersonality) {
       case "maria":
