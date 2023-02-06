@@ -1,6 +1,6 @@
 import { eventModule, EventType } from "@sern/handler";
 import type { Client } from "discord.js";
-import { REST } from 'discord.js'
+import { REST, Routes } from 'discord.js'
 import mongo from '../utility/other/database/mongo'
 import dotenv from "dotenv";
 

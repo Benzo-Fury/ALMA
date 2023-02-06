@@ -12,6 +12,15 @@ const serverSchema = new mongoose.Schema({
   AIPersonality: {
     type: String,
     required: true
+  },
+  welcomeChannel: {
+    type: String,
+    required: true
+  },
+  welcomeAIPersonality: {
+    type: String,
+    required: true,
+    default: 'maria'
   }
 });
 
