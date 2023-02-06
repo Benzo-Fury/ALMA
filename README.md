@@ -22,6 +22,10 @@ The bot is capable of generating responses to input in a conversational manner, 
 
 If you would like to contribute to the development of this bot, feel free to submit a pull request or open an issue. We welcome all contributions that improve the functionality of the bot.
 
+## Other
+
+The aesthetic presentation of messages and embeds is not a current priority and is scheduled to be addressed at a later time for enhancement purposes.
+
 ## Inviting
 
 At the time being the bot is a WIP so may be down at times or may be receiving many errors/crashes. Please keep this in mind when attempting to use Siamese.
