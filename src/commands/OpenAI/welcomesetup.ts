@@ -5,7 +5,6 @@ import { permCheck } from "../../plugins/permCheck";
 import { publish } from "../../plugins/publish";
 import serverSchema from "../../schemas/serverSchema";
 import userSchema from "../../schemas/userSchema";
-import json from '../../utility/other/openAI/personalityDesc.json'
 
 export default commandModule({
   type: CommandType.Both,

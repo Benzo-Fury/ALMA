@@ -37,6 +37,6 @@ export default commandModule({
             upsert: true
         }
     )
-    await ctx.reply("DONE");
+    await ctx.reply(`${user} has now been given permission to use trevor 😏`);
   },
 });
