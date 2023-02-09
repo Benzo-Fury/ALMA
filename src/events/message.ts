@@ -3,6 +3,7 @@ import serverSchema from "../schemas/serverSchema";
 import type { Message } from "discord.js";
 import dotenv from "dotenv";
 import textTrainers from "../utility/other/openAI//personalityDesc.json";
+//add memory
 
 dotenv.config();
 

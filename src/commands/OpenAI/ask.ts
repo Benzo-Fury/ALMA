@@ -4,6 +4,7 @@ import { publish } from "../../plugins/publish";
 import { Configuration, OpenAIApi } from "openai";
 import textTrainer from "../../utility/other/openAI/personalityDesc.json";
 import userSchema from "../../schemas/userSchema";
+//add memory
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
