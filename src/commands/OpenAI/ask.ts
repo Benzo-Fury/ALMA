@@ -15,7 +15,6 @@ export default commandModule({
   type: CommandType.Slash,
   plugins: [publish()],
   description: "Asks openAI (chat GPT) questions.",
-  //alias : [],
   options: [
     {
       name: "question",
@@ -103,7 +102,7 @@ export default commandModule({
     try {
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        prompt: personalityPrompt + question + ".",
+        prompt: `${personalityPrompt} ${question}.`,
         temperature: uniqueness,
         max_tokens: 100,
       });
