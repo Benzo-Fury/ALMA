@@ -27,9 +27,7 @@ const api = new ChatGPTAPI({
 export default commandModule({
   name: "ask",
   type: CommandType.Slash,
-  plugins: [
-    publish(),
-  ],
+  plugins: [publish()],
   description: "Asks openAI (chat GPT) questions.",
   options: [
     {

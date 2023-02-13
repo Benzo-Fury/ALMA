@@ -9,7 +9,7 @@ export function addButtonsEnabled() {
     new ButtonBuilder() //STOP
       .setCustomId("aa")
       .setLabel("🔁 Ask Again")
-      .setStyle(ButtonStyle.Secondary),
+      .setStyle(ButtonStyle.Secondary)
   );
   return row;
 }
