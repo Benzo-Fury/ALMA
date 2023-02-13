@@ -6,8 +6,11 @@ import {
   EmbedBuilder,
   StringSelectMenuBuilder,
 } from "discord.js";
-import serverSchema from "../../../../../schemas/serverSchema";
-import personalityDesc1 from "../../../../other/openAI/personalityDesc.json";
+import { createRequire } from "module";
+import serverSchema from "../../../../../schemas/serverSchema.js";
+
+const fakeRequire = createRequire(import.meta.url)
+const personalityDesc1 = fakeRequire('../../../../other/openAI/personalityDesc.json')
 
 export async function personality(i: ButtonInteraction<CacheType>) {
   const serverResult = await serverSchema.findOne({ _id: i.guild?.id });

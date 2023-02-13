@@ -1,5 +1,5 @@
 import { ButtonInteraction, CacheType, EmbedBuilder } from "discord.js";
-import serverSchema from "../../../../../schemas/serverSchema";
+import serverSchema from "../../../../../schemas/serverSchema.js";
 
 export async function stop(i: ButtonInteraction<CacheType>) {
 

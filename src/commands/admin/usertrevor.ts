@@ -1,8 +1,8 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType } from "discord.js";
-import { ownerOnly } from "../../plugins/ownerOnly";
-import { publish } from "../../plugins/publish";
-import userSchema from "../../schemas/userSchema";
+import { ownerOnly } from "../../plugins/ownerOnly.js";
+import { publish } from "../../plugins/publish.js";
+import userSchema from "../../schemas/userSchema.js";
 
 export default commandModule({
   type: CommandType.Both,

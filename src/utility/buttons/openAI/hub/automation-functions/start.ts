@@ -6,10 +6,12 @@ import {
   ComponentType,
   EmbedBuilder,
 } from "discord.js";
-import serverSchema from "../../../../../schemas/serverSchema";
-import userSchema from "../../../../../schemas/userSchema";
-import personalityDesc1 from "../../../../other/openAI/personalityDesc.json";
-import textTrainer from '../../../../other/openAI/personalityDesc.json'
+import { createRequire } from "module";
+import serverSchema from "../../../../../schemas/serverSchema.js";
+import userSchema from "../../../../../schemas/userSchema.js";
+const fakeRequire = createRequire(import.meta.url)
+const textTrainer = fakeRequire('../../../../other/openAI/personalityDesc.json')
+const personalityDesc1 = fakeRequire("../../../../other/openAI/personalityDesc.json")
 
 export async function start(i: ButtonInteraction<CacheType>) {
   //creating modal to gather information to start the AI watching

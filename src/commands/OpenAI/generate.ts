@@ -1,5 +1,5 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { publish } from "../../plugins/publish";
+import { publish } from "../../plugins/publish.js";
 import { Configuration, OpenAIApi } from "openai";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 

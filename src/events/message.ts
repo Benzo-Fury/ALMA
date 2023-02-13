@@ -1,9 +1,12 @@
 import { eventModule, EventType } from "@sern/handler";
-import serverSchema from "../schemas/serverSchema";
-import userSchema from "../schemas/userSchema";
+import serverSchema from "../schemas/serverSchema.js";
+import userSchema from "../schemas/userSchema.js";
 import type { Message } from "discord.js";
 import dotenv from "dotenv";
-import textTrainers from "../utility/other/openAI//personalityDesc.json";
+import { createRequire } from "module";
+
+const fakeRequire = createRequire(import.meta.url)
+const textTrainers = fakeRequire('../utility/other/openAI//personalityDesc.json')
 //add memory
 
 dotenv.config();

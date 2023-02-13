@@ -1,10 +1,10 @@
 import { commandModule, CommandType } from "@sern/handler";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
-import { guildOnly } from "../../plugins/guildOnly";
-import { permCheck } from "../../plugins/permCheck";
-import { publish } from "../../plugins/publish";
-import serverSchema from "../../schemas/serverSchema";
-import userSchema from "../../schemas/userSchema";
+import { guildOnly } from "../../plugins/guildOnly.js";
+import { permCheck } from "../../plugins/permCheck.js";
+import { publish } from "../../plugins/publish.js";
+import serverSchema from "../../schemas/serverSchema.js";
+import userSchema from "../../schemas/userSchema.js";
 
 export default commandModule({
   type: CommandType.Both,

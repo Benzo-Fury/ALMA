@@ -1,16 +1,16 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { guildOnly } from "../../plugins/guildOnly";
-import { permCheck } from "../../plugins/permCheck";
-import { publish } from "../../plugins/publish";
+import { guildOnly } from "../../plugins/guildOnly.js";
+import { permCheck } from "../../plugins/permCheck.js";
+import { publish } from "../../plugins/publish.js";
 import {
   ComponentType,
   EmbedBuilder,
 } from "discord.js";
-import { addButtonsEnabled } from "../../utility/buttons/openAI/hub/adding/addButtonsEnabled";
-import { addButtonsDisabled } from "../../utility/buttons/openAI/hub/adding/addButtonsDisabled";
-import { start } from "../../utility/buttons/openAI/hub/automation-functions/start";
-import { personality } from "../../utility/buttons/openAI/hub/automation-functions/personality";
-import { stop } from "../../utility/buttons/openAI/hub/automation-functions/stop";
+import { addButtonsEnabled } from "../../utility/buttons/openAI/hub/adding/addButtonsEnabled.js";
+import { addButtonsDisabled } from "../../utility/buttons/openAI/hub/adding/addButtonsDisabled.js";
+import { start } from "../../utility/buttons/openAI/hub/automation-functions/start.js";
+import { personality } from "../../utility/buttons/openAI/hub/automation-functions/personality.js";
+import { stop } from "../../utility/buttons/openAI/hub/automation-functions/stop.js";
 
 export default commandModule({
   type: CommandType.Slash,
@@ -44,11 +44,11 @@ export default commandModule({
     });
     const collector = message.createMessageComponentCollector({
       componentType: ComponentType.Button,
-      time: 15000,
+      time: 60000,
     });
 
     collector.on("collect", (i) => {
-      if (i.user.id !== ctx.interaction.user.id || !i.isButton()) return;
+      if (i.user.id !== ctx.interaction.user.id) return;
       if(i.customId === 'start') start(i);
       if(i.customId === 'personality') personality(i)
       if(i.customId === 'stop') stop(i)

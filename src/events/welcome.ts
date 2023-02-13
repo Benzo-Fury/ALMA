@@ -1,14 +1,16 @@
 import { eventModule, EventType } from "@sern/handler";
 import {
   EmbedBuilder,
-  GuildBasedChannel,
   GuildMember,
   TextBasedChannel,
 } from "discord.js";
-import serverSchema from "../schemas/serverSchema";
+import serverSchema from "../schemas/serverSchema.js";
 import { Configuration, OpenAIApi } from "openai";
+import { createRequire } from "module";
 import dotenv from "dotenv";
-import textTrainer from "../utility/other/openAI/personalityDesc.json";
+
+const fakeRequire = createRequire(import.meta.url)
+const textTrainer = fakeRequire('../utility/other/openAI/personalityDesc.json')
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
