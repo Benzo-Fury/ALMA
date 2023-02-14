@@ -54,7 +54,7 @@ export async function continueConversation(
   //receiving results
   const filter = (modalI: Interaction) => modalI.user.id === i.user.id;
 
-  const submitted = await i.awaitModalSubmit({ time: 20000, filter });
+  const submitted = await i.awaitModalSubmit({ time: 60000, filter });
   if (!submitted) return;
 
   await submitted.deferReply();
@@ -78,7 +78,7 @@ export async function continueConversation(
   // create collector
   const collector = msg.createMessageComponentCollector({
     componentType: ComponentType.Button,
-    time: 20000,
+    time: 60000,
   });
 
   collector.on("collect", async (ie: ButtonInteraction) => {
@@ -96,5 +96,11 @@ export async function continueConversation(
     } else if (ie.customId === "aa") {
       askAgain(ie, api, modalResults, textTrainer, embed);
     }
+  });
+  collector.on("end", async (inter: ButtonInteraction) => {
+    await inter.editReply({
+      embeds: [embed],
+      components: [addButtonsDisabled()],
+    });
   });
 }

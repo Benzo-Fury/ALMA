@@ -168,11 +168,11 @@ export default commandModule({
           components: [addButtonsEnabled()],
         });
 
-        //running event
+        //running collector
 
         const collector = msg.createMessageComponentCollector({
           componentType: ComponentType.Button,
-          time: 20000,
+          time: 60000,
         });
 
         collector.on("collect", (i) => {
