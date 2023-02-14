@@ -1,7 +1,7 @@
 # ALMA
 <img alt="Lines of code" src="https://tokei.rs/b1/github/Benzo-Fury/ALMA"/>
 
-Artifical Language Modeling Assistant - A Discord bot based on a Neural Network that generates responses in a conversational manner. The bot has been trained on a dataset of conversational data, allowing it to generate responses that are similar in context and meaning to the input.
+Artificial Language Modeling Assistant - A Discord bot based on a Neural Network that generates responses in a conversational manner. The bot has been trained on a dataset of conversational data, allowing it to generate responses that are similar in context and meaning to the input.
 
 ## Features
 
