@@ -187,7 +187,6 @@ export default commandModule({
               api,
               res,
               personalityPrompt,
-              personality,
               embed,
               ctx
             );

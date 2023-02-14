@@ -3,10 +3,8 @@ import {
   ActionRowBuilder,
   ButtonInteraction,
   CacheType,
-  Client,
   ComponentType,
   EmbedBuilder,
-  Events,
   Interaction,
   ModalActionRowComponentBuilder,
   ModalBuilder,
@@ -23,7 +21,6 @@ export async function continueConversation(
   api: ChatGPTAPI,
   res: ChatMessage,
   textTrainer: string,
-  personality: string,
   embed: EmbedBuilder,
   ctx: Context
 ) {
@@ -56,7 +53,6 @@ export async function continueConversation(
 
   const submitted = await i.awaitModalSubmit({ time: 60000, filter });
   if (!submitted) return;
-
   await submitted.deferReply();
   const modalResults = submitted.fields.getTextInputValue("newQuestionInput");
 
