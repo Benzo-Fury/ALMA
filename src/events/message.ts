@@ -4,14 +4,20 @@ import userSchema from "../schemas/userSchema.js";
 import type { Message } from "discord.js";
 import dotenv from "dotenv";
 import { createRequire } from "module";
+import { Configuration, OpenAIApi } from "openai";
+import { ChatGPTAPI } from "chatgpt";
 
-const fakeRequire = createRequire(import.meta.url)
-const textTrainers = fakeRequire('../utility/other/openAI//personalityDesc.json')
+const fakeRequire = createRequire(import.meta.url);
+const textTrainers = fakeRequire(
+  "../utility/other/openAI//personalityDesc.json"
+);
 //add memory
 
 dotenv.config();
 
-import { Configuration, OpenAIApi } from "openai";
+const api = new ChatGPTAPI({
+  apiKey: `${process.env.OPENAI_API_KEY}`,
+});
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -61,16 +67,10 @@ export default eventModule({
     }
 
     //sending request
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `Previously asked questions and answers with you and this user: ${userResult?.userMemory.join()}. ${prompt}`,
-      temperature: 0.5,
-      max_tokens: 60,
-      top_p: 0.3,
-      frequency_penalty: 0.5,
-      presence_penalty: 0.0,
+    const response = await api.sendMessage(prompt, {
+      timeoutMs: 5 * 60 * 1000
     });
-    const answer = response.data.choices[0].text!;
+    const answer = response.text;
 
     //sending embed
     message.channel.send(answer);
