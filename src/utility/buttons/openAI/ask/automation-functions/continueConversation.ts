@@ -57,10 +57,16 @@ export async function continueConversation(
   const modalResults = submitted.fields.getTextInputValue("newQuestionInput");
 
   // send new request to API
-  res = await api.sendMessage(`${textTrainer} ${modalResults}.`, {
-    conversationId: res.conversationId,
-    parentMessageId: res.id,
-  });
+  try {
+    res = await api.sendMessage(`${textTrainer} ${modalResults}.`, {
+      conversationId: res.conversationId,
+      parentMessageId: res.id,
+    });
+  } catch {
+    return await submitted.editReply(
+      'There has been to many requests made. Try again or set the "tool" to davinci-text-003'
+    );
+  }
 
   // create embed
   embed.setDescription(res.text.substring(0, 2000));
