@@ -21,6 +21,11 @@ const serverSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'maria'
+  },
+  welcomeAITool: {
+    type: String,
+    required: true,
+    default: 'davinci-text-003'
   }
 });
 
