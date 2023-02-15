@@ -1,16 +1,12 @@
 import { eventModule, EventType } from "@sern/handler";
-import {
-  EmbedBuilder,
-  GuildMember,
-  TextBasedChannel,
-} from "discord.js";
+import { EmbedBuilder, GuildMember, TextBasedChannel } from "discord.js";
 import serverSchema from "../schemas/serverSchema.js";
 import { Configuration, OpenAIApi } from "openai";
 import { createRequire } from "module";
 import dotenv from "dotenv";
 
-const fakeRequire = createRequire(import.meta.url)
-const textTrainer = fakeRequire('../utility/other/openAI/personalityDesc.json')
+const fakeRequire = createRequire(import.meta.url);
+const textTrainer = fakeRequire("../utility/other/openAI/personalityDesc.json");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -68,21 +64,21 @@ export default eventModule({
       .setColor("#2f3136");
 
     //sending embed
-    try{
-    (welcomeChannel as TextBasedChannel).send({ embeds: [embed] });
+    try {
+      (welcomeChannel as TextBasedChannel).send({ embeds: [embed] });
     } catch {
-        console.log('couldn\'t send welcome to channel.')
-        await serverSchema.findOneAndUpdate(
-            {
-                _id: member.guild.id
-            },
-            {
-                welcomeChannel: null
-            },
-            {
-                upsert: true
-            }
-        )
+      console.log("couldn't send welcome to channel.");
+      await serverSchema.findOneAndUpdate(
+        {
+          _id: member.guild.id,
+        },
+        {
+          welcomeChannel: null,
+        },
+        {
+          upsert: true,
+        }
+      );
     }
   },
 });
