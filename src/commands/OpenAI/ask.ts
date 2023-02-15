@@ -146,7 +146,11 @@ export default commandModule({
         });
         answer = response.data.choices[0].text!;
       } else {
-        res = await api.sendMessage(`${personalityPrompt} ${question}.`);
+        console.log(personalityPrompt)
+        res = await api.sendMessage(`${question}.`,
+        {
+          promptPrefix: personalityPrompt
+        });
         answer = res.text;
       }
       //Turning the text into a embed

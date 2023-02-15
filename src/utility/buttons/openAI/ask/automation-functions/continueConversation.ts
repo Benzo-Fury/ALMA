@@ -98,11 +98,11 @@ export async function continueConversation(
     } else if (ie.customId === "aa") {
       askAgain(ie, api, modalResults, textTrainer, embed);
     }
-  });
-  collector.on("end", async (inter: ButtonInteraction) => {
-    await inter.editReply({
-      embeds: [embed],
-      components: [addButtonsDisabled()],
-    });
+    setTimeout(async () => {
+      await submitted.editReply({
+        embeds: [embed],
+        components: [addButtonsDisabled()],
+      });
+    }, 60000);
   });
 }
