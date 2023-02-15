@@ -27,7 +27,15 @@ const api = new ChatGPTAPI({
 export default commandModule({
   name: "ask",
   type: CommandType.Slash,
-  plugins: [publish()],
+  plugins: [
+    publish(),
+    cooldown.add([["user", "1/4"]], (cooldown) => {
+      const { seconds, context } = cooldown;
+      return context.reply(
+        `Please wait ${seconds} seconds before using this command again.`
+      );
+    }),
+  ],
   description: "Asks openAI (chat GPT) questions.",
   options: [
     {
@@ -182,14 +190,7 @@ export default commandModule({
               ephemeral: true,
             });
           } else if (i.customId === "cc") {
-            continueConversation(
-              i,
-              api,
-              res,
-              personalityPrompt,
-              embed,
-              ctx
-            );
+            continueConversation(i, api, res, personalityPrompt, embed, ctx);
           } else if (i.customId === "aa") {
             askAgain(i, api, question, personalityPrompt, embed);
           }
