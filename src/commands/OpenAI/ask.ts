@@ -1,9 +1,12 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
+import { ApplicationCommandOptionType, ButtonInteraction, CacheType, ComponentType, EmbedBuilder } from "discord.js";
 import { publish } from "../../plugins/publish";
 import { Configuration, OpenAIApi } from "openai";
 import textTrainer from "../../utility/other/openAI/personalityDesc.json";
 import userSchema from "../../schemas/userSchema";
+import { addButtonsEnabled } from "../../utility/buttons/openAI/ask/adding/addButtonsEnabled";
+import { askAgain } from "../../utility/buttons/openAI/ask/automation-functions/askAgain";
+import { addButtonsDisabled } from "../../utility/buttons/openAI/ask/adding/addButtonsDisabled";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -66,7 +69,7 @@ export default commandModule({
     //gathering personality
     let personality = ctx.interaction.options.getString("personality");
 
-    let personalityPrompt;
+    let personalityPrompt = '';
 
     switch (personality) {
       case "maria":
@@ -79,7 +82,9 @@ export default commandModule({
         {
           const userResult = await userSchema.findOne({ _id: ctx.user.id });
           if (!userResult || userResult.trevorAllowed === false)
-            return ctx.interaction.editReply("This chatbot is not accessible by you.");
+            return ctx.interaction.editReply(
+              "This chatbot is not accessible by you."
+            );
           personalityPrompt = textTrainer.trevor["text-trainer"];
         }
         break;
@@ -93,7 +98,8 @@ export default commandModule({
     const question = ctx.interaction.options.getString("question")!;
 
     //checking if question too long
-    if(question.length > 255) return ctx.interaction.editReply('This question is too long')
+    if (question.length > 255)
+      return ctx.interaction.editReply("This question is too long");
 
     let uniqueness =
       ctx.interaction.options.getString("uniqueness") === "HIGH" ? 1 : 0;
@@ -123,12 +129,38 @@ export default commandModule({
         });
 
       //checking the response inst to long and responding
-      await ctx.interaction.editReply({ embeds: [embed] });
+      const msg = await ctx.interaction.editReply({
+        embeds: [embed],
+        components: [addButtonsEnabled()],
+      });
+
+      const collector = msg.createMessageComponentCollector({
+        componentType: ComponentType.Button,
+        time: 60000,
+      });
+
+      collector.on("collect", (i) => {
+        if (i.user.id !== ctx.interaction.user.id) {
+          i.reply({
+            content: `You cannot use that!`,
+            ephemeral: true,
+          });
+        } else if (i.customId === "aa") {
+          askAgain(i, openai, question, personalityPrompt, embed);
+        }
+      });
+      collector.on("end", (i) => {
+        ctx.interaction.editReply({
+          embeds: [embed],
+          components: [addButtonsDisabled()],
+        });
+      });
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return ctx.interaction.editReply(
         "There was an error while processing your request. Try again."
       );
     }
   },
 });
+

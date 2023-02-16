@@ -76,7 +76,11 @@ export default eventModule({
     let realUserResult;
 
     if (!userResult) {
-      await userSchema.create({ _id: message.member?.user.id });
+      await userSchema.create(
+        {
+          _id: message.member?.user.id,
+        }
+      );
       realUserResult = await userSchema.findOne({
         _id: message.member?.user.id,
       });
@@ -89,7 +93,7 @@ export default eventModule({
     }
 
     realUserResult?.userMemory.unshift(
-      `User asked:${question}. You (maria) responded:${answer}`
+      `User asked:${question}. You responded:${answer}`
     );
 
     //updating memory

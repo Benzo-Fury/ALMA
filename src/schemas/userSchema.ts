@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   money: {
-    type: String,
+    type: Number,
+    default: 0,
     required: true
   },
   trevorAllowed: {
