@@ -1,12 +1,21 @@
 import { commandModule, CommandType } from "@sern/handler";
-import { ApplicationCommandOptionType, ButtonInteraction, CacheType, ComponentType, EmbedBuilder } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  ButtonInteraction,
+  CacheType,
+  ComponentType,
+  EmbedBuilder,
+} from "discord.js";
 import { publish } from "../../plugins/publish";
 import { Configuration, OpenAIApi } from "openai";
 import textTrainer from "../../utility/other/openAI/personalityDesc.json";
-import userSchema from "../../schemas/userSchema";
+import userSchema from "../../utility/database/schemas/userSchema";
 import { addButtonsEnabled } from "../../utility/buttons/openAI/ask/adding/addButtonsEnabled";
 import { askAgain } from "../../utility/buttons/openAI/ask/automation-functions/askAgain";
 import { addButtonsDisabled } from "../../utility/buttons/openAI/ask/adding/addButtonsDisabled";
+import { genie } from "better-ai";
+
+const connection = new genie(process.env.OPENAI_API_KEY || "");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -24,22 +33,6 @@ export default commandModule({
       type: ApplicationCommandOptionType.String,
       description: "The question you would like to ask OpenAI.",
       required: true,
-    },
-    {
-      name: "uniqueness",
-      type: ApplicationCommandOptionType.String,
-      description: "How unique the text should be",
-      required: false,
-      choices: [
-        {
-          name: "low",
-          value: "LOW",
-        },
-        {
-          name: "high",
-          value: "HIGH",
-        },
-      ],
     },
     {
       name: "personality",
@@ -69,7 +62,7 @@ export default commandModule({
     //gathering personality
     let personality = ctx.interaction.options.getString("personality");
 
-    let personalityPrompt = '';
+    let personalityPrompt = "";
 
     switch (personality) {
       case "maria":
@@ -101,19 +94,15 @@ export default commandModule({
     if (question.length > 255)
       return ctx.interaction.editReply("This question is too long");
 
-    let uniqueness =
-      ctx.interaction.options.getString("uniqueness") === "HIGH" ? 1 : 0;
-
     //asking the question to openai
     try {
-      const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: `${personalityPrompt} ${question}.`,
-        temperature: uniqueness,
-        max_tokens: 100,
+      const response = await connection.generateText({
+        prompt: question,
+        prefix: personalityPrompt,
+        creativity: 1,
       });
       //Turning the text into a embed
-      const answer = response.data.choices[0].text!;
+      const answer = response as string;
       const embed = new EmbedBuilder()
         .setAuthor({
           name: question,
@@ -163,4 +152,3 @@ export default commandModule({
     }
   },
 });
-

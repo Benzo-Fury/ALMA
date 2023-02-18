@@ -4,9 +4,9 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default async () => {
+    mongoose.set('strictQuery', false);
     await mongoose.connect(process.env.MONGOURI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        keepAlive: true,
     })
     return mongoose
 } 

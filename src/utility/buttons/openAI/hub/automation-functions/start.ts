@@ -6,8 +6,8 @@ import {
   ComponentType,
   EmbedBuilder,
 } from "discord.js";
-import serverSchema from "../../../../../schemas/serverSchema";
-import userSchema from "../../../../../schemas/userSchema";
+import serverSchema from "../../../../database/schemas/serverSchema";
+import userSchema from "../../../../database/schemas/userSchema";
 import personalityDesc1 from "../../../../other/openAI/personalityDesc.json";
 import textTrainer from '../../../../other/openAI/personalityDesc.json'
 

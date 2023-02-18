@@ -1,6 +1,6 @@
 //private plugin :)
 import { CommandType, CommandControlPlugin, controller } from "@sern/handler";
-import userSchema from "../schemas/userSchema";
+import userSchema from "../utility/database/schemas/userSchema";
 
 export function newUser() {
   return CommandControlPlugin<CommandType.Slash>(async (ctx, args) => {

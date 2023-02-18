@@ -7,6 +7,7 @@ import {
   DefaultLogging,
 } from "@sern/handler";
 import dotenv from "dotenv";
+import pkg from 'mongoose'
 
 dotenv.config();
 
@@ -22,13 +23,15 @@ const client = new Client({
 interface MyDependencies extends Dependencies {
   "@sern/client": Singleton<Client>;
   "@sern/logger": Singleton<DefaultLogging>;
+  mongoose: Singleton<pkg.Connection>;
 }
 
 export const useContainer = Sern.makeDependencies<MyDependencies>({
   build: (root) =>
     root
       .add({ "@sern/client": single(() => client) })
-      .upsert({ "@sern/logger": single(() => new DefaultLogging()) }),
+      .upsert({ "@sern/logger": single(() => new DefaultLogging()) })
+      .add({ mongoose: single(() => pkg.connection) }),
 });
 
 Sern.init({

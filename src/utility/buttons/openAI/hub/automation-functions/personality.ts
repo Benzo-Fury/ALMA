@@ -6,7 +6,7 @@ import {
   EmbedBuilder,
   StringSelectMenuBuilder,
 } from "discord.js";
-import serverSchema from "../../../../../schemas/serverSchema";
+import serverSchema from "../../../../database/schemas/serverSchema";
 import personalityDesc1 from "../../../../other/openAI/personalityDesc.json";
 
 export async function personality(i: ButtonInteraction<CacheType>) {

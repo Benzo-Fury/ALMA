@@ -3,8 +3,8 @@ import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
 import { guildOnly } from "../../plugins/guildOnly";
 import { permCheck } from "../../plugins/permCheck";
 import { publish } from "../../plugins/publish";
-import serverSchema from "../../schemas/serverSchema";
-import userSchema from "../../schemas/userSchema";
+import serverSchema from "../../utility/database/schemas/serverSchema";
+import userSchema from "../../utility/database/schemas/userSchema";
 
 export default commandModule({
   type: CommandType.Both,

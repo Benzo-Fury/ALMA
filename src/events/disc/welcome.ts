@@ -5,10 +5,10 @@ import {
   GuildMember,
   TextBasedChannel,
 } from "discord.js";
-import serverSchema from "../schemas/serverSchema";
+import serverSchema from "../../utility/database/schemas/serverSchema";
 import { Configuration, OpenAIApi } from "openai";
 import dotenv from "dotenv";
-import textTrainer from "../utility/other/openAI/personalityDesc.json";
+import textTrainer from "../../utility/other/openAI/personalityDesc.json";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,

@@ -1,9 +1,9 @@
 import { eventModule, EventType } from "@sern/handler";
-import serverSchema from "../schemas/serverSchema";
-import userSchema from "../schemas/userSchema";
+import serverSchema from "../../utility/database/schemas/serverSchema";
+import userSchema from "../../utility/database/schemas/userSchema";
 import type { Message } from "discord.js";
 import dotenv from "dotenv";
-import textTrainers from "../utility/other/openAI//personalityDesc.json";
+import textTrainers from "../../utility/other/openAI/personalityDesc.json";
 //add memory
 
 dotenv.config();
