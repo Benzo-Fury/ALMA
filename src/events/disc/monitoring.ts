@@ -61,11 +61,8 @@ export default eventModule({
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: `Previously asked questions and answers with you and this user: ${userResult?.userMemory.join()}. ${prompt}`,
-      temperature: 0.5,
+      temperature: 1,
       max_tokens: 60,
-      top_p: 0.3,
-      frequency_penalty: 0.5,
-      presence_penalty: 0.0,
     });
     const answer = response.data.choices[0].text!;
 

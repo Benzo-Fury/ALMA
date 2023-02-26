@@ -2,9 +2,9 @@ import { commandModule, CommandType } from "@sern/handler";
 import { publish } from "../../plugins/publish";
 import { Configuration, OpenAIApi } from "openai";
 import { ApplicationCommandOptionType, EmbedBuilder } from "discord.js";
-import { genie } from 'better-ai'
+import { boostAI } from 'boost-ai'
 
-const api = new genie(process.env.OPENAI_API_KEY as string)
+const api = new boostAI(process.env.OPENAI_API_KEY as string)
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -56,7 +56,6 @@ export default commandModule({
       ctx.interaction.editReply(
         "A error occurred while trying to generate your image. Chances are that your prompt was inappropriate. Try again or use a different prompt."
       );
-      console.log(err)
     }
   },
 });

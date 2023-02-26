@@ -1,26 +1,18 @@
 import { commandModule, CommandType } from "@sern/handler";
 import {
   ApplicationCommandOptionType,
-  ButtonInteraction,
-  CacheType,
   ComponentType,
   EmbedBuilder,
 } from "discord.js";
 import { publish } from "../../plugins/publish";
-import { Configuration, OpenAIApi } from "openai";
 import textTrainer from "../../utility/other/openAI/personalityDesc.json";
 import userSchema from "../../utility/database/schemas/userSchema";
 import { addButtonsEnabled } from "../../utility/buttons/openAI/ask/adding/addButtonsEnabled";
 import { askAgain } from "../../utility/buttons/openAI/ask/automation-functions/askAgain";
 import { addButtonsDisabled } from "../../utility/buttons/openAI/ask/adding/addButtonsDisabled";
-import { genie } from "better-ai";
+import { boostAI } from "boost-ai";
 
-const connection = new genie(process.env.OPENAI_API_KEY || "");
-
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+const connection = new boostAI(process.env.OPENAI_API_KEY as string);
 
 export default commandModule({
   name: "ask",
@@ -135,7 +127,7 @@ export default commandModule({
             ephemeral: true,
           });
         } else if (i.customId === "aa") {
-          askAgain(i, openai, question, personalityPrompt, embed);
+          askAgain(i, connection, question, personalityPrompt, embed);
         }
       });
       collector.on("end", (i) => {
