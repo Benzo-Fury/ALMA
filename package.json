@@ -16,7 +16,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@sern/handler": "^2.5.0",
-    "better-ai": "^1.0.0",
+    "boost-ai": "^1.2.4",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "mongoose": "^6.9.0",
