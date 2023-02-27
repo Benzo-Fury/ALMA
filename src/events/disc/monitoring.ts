@@ -4,7 +4,7 @@ import userSchema from "../../utility/database/schemas/userSchema";
 import type { Message } from "discord.js";
 import dotenv from "dotenv";
 import textTrainers from "../../utility/other/openAI/personalityDesc.json";
-//add memory
+//change to new api
 
 dotenv.config();
 
